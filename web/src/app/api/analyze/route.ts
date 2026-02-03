@@ -358,6 +358,65 @@ function generateRecommendations(categories: any) {
     })
   }
   
+  // Recommandations supplémentaires pour toujours avoir du contenu
+  if (mr.semanticElements.missing.length > 0 && mr.semanticElements.missing.length <= 3) {
+    recommendations.push({
+      category: 'Lisibilité Machine',
+      priority: 'low',
+      issue: `Éléments sémantiques à ajouter: ${mr.semanticElements.missing.join(', ')}`,
+      action: 'Ajouter les balises HTML5 manquantes pour améliorer la structure'
+    })
+  }
+  
+  if (mr.divRatio.ratio < 0.3 && mr.divRatio.score < 5) {
+    recommendations.push({
+      category: 'Lisibilité Machine',
+      priority: 'low',
+      issue: 'Ratio éléments sémantiques/divs faible',
+      action: 'Remplacer certains <div> par des balises sémantiques (article, section, nav)'
+    })
+  }
+  
+  if (ef.orderedLists.count === 0) {
+    recommendations.push({
+      category: 'Formatage Extraction',
+      priority: 'low',
+      issue: 'Aucune liste ordonnée détectée',
+      action: 'Utiliser des <ol> pour les processus et étapes (meilleure extraction IA)'
+    })
+  }
+  
+  if (ba.ariaLabels.count < 5) {
+    recommendations.push({
+      category: 'Accessibilité Bots',
+      priority: 'low',
+      issue: 'Peu d\'attributs ARIA détectés',
+      action: 'Ajouter des aria-label pour améliorer l\'accessibilité et la compréhension IA'
+    })
+  }
+  
+  // Si toujours aucune recommandation (site excellent), ajouter des suggestions générales
+  if (recommendations.length === 0) {
+    recommendations.push({
+      category: 'Optimisation',
+      priority: 'low',
+      issue: 'Site déjà bien optimisé',
+      action: 'Ajouter un fichier llms.txt pour des instructions spécifiques aux IA'
+    })
+    recommendations.push({
+      category: 'Optimisation',
+      priority: 'low',
+      issue: 'Amélioration continue',
+      action: 'Enrichir vos schemas JSON-LD avec plus de types (HowTo, Article, Product)'
+    })
+    recommendations.push({
+      category: 'Optimisation',
+      priority: 'low',
+      issue: 'Visibilité IA',
+      action: 'Ajouter une FAQ structurée avec le schema FAQPage pour les featured snippets IA'
+    })
+  }
+  
   const priorityOrder: any = { high: 0, medium: 1, low: 2 }
   recommendations.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority])
   

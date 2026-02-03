@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fffbeb;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fef3c7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fff7ed;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#fb923c;stop-opacity:0.1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="url(#grad1)"/>
+  
+  <!-- Network lines -->
+  <g stroke="url(#lineGrad)" stroke-width="1.5" fill="none">
+    <!-- Main connections -->
+    <path d="M100,200 Q300,100 500,180" opacity="0.6"/>
+    <path d="M500,180 Q700,250 900,150" opacity="0.5"/>
+    <path d="M900,150 Q1050,200 1150,100" opacity="0.4"/>
+    <path d="M200,400 Q400,350 600,420" opacity="0.5"/>
+    <path d="M600,420 Q800,480 1000,380" opacity="0.4"/>
+    <path d="M50,600 Q250,550 450,620" opacity="0.5"/>
+    <path d="M450,620 Q650,680 850,580" opacity="0.4"/>
+    <path d="M850,580 Q1000,520 1150,600" opacity="0.3"/>
+    
+    <!-- Cross connections -->
+    <path d="M100,200 Q200,300 200,400" opacity="0.4"/>
+    <path d="M500,180 Q550,300 600,420" opacity="0.5"/>
+    <path d="M900,150 Q950,260 1000,380" opacity="0.4"/>
+    <path d="M200,400 Q300,510 450,620" opacity="0.4"/>
+    <path d="M600,420 Q700,500 850,580" opacity="0.4"/>
+    
+    <!-- Additional network paths -->
+    <path d="M300,100 Q400,200 350,350" opacity="0.3"/>
+    <path d="M750,120 Q800,220 780,350" opacity="0.3"/>
+    <path d="M1100,250 Q1050,400 1100,550" opacity="0.3"/>
+    <path d="M150,500 Q200,600 100,700" opacity="0.3"/>
+  </g>
+  
+  <!-- Nodes - Large -->
+  <g>
+    <circle cx="100" cy="200" r="12" fill="#f59e0b" opacity="0.7"/>
+    <circle cx="100" cy="200" r="6" fill="#ffffff"/>
+    
+    <circle cx="500" cy="180" r="14" fill="#f59e0b" opacity="0.8"/>
+    <circle cx="500" cy="180" r="7" fill="#ffffff"/>
+    
+    <circle cx="900" cy="150" r="10" fill="#fb923c" opacity="0.6"/>
+    <circle cx="900" cy="150" r="5" fill="#ffffff"/>
+    
+    <circle cx="600" cy="420" r="16" fill="#f59e0b" opacity="0.7"/>
+    <circle cx="600" cy="420" r="8" fill="#ffffff"/>
+    
+    <circle cx="850" cy="580" r="12" fill="#fb923c" opacity="0.6"/>
+    <circle cx="850" cy="580" r="6" fill="#ffffff"/>
+  </g>
+  
+  <!-- Nodes - Medium -->
+  <g>
+    <circle cx="200" cy="400" r="8" fill="#fbbf24" opacity="0.7"/>
+    <circle cx="200" cy="400" r="4" fill="#ffffff"/>
+    
+    <circle cx="1000" cy="380" r="9" fill="#f59e0b" opacity="0.5"/>
+    <circle cx="1000" cy="380" r="4" fill="#ffffff"/>
+    
+    <circle cx="450" cy="620" r="10" fill="#fbbf24" opacity="0.6"/>
+    <circle cx="450" cy="620" r="5" fill="#ffffff"/>
+    
+    <circle cx="50" cy="600" r="7" fill="#fb923c" opacity="0.5"/>
+    <circle cx="50" cy="600" r="3" fill="#ffffff"/>
+    
+    <circle cx="1150" cy="100" r="8" fill="#fbbf24" opacity="0.5"/>
+    <circle cx="1150" cy="100" r="4" fill="#ffffff"/>
+    
+    <circle cx="1150" cy="600" r="9" fill="#f59e0b" opacity="0.4"/>
+    <circle cx="1150" cy="600" r="4" fill="#ffffff"/>
+  </g>
+  
+  <!-- Nodes - Small (decorative) -->
+  <g fill="#f59e0b">
+    <circle cx="300" cy="100" r="4" opacity="0.5"/>
+    <circle cx="750" cy="120" r="5" opacity="0.4"/>
+    <circle cx="350" cy="350" r="4" opacity="0.4"/>
+    <circle cx="780" cy="350" r="5" opacity="0.4"/>
+    <circle cx="150" cy="500" r="4" opacity="0.5"/>
+    <circle cx="100" cy="700" r="3" opacity="0.3"/>
+    <circle cx="1100" cy="250" r="4" opacity="0.4"/>
+    <circle cx="1100" cy="550" r="5" opacity="0.4"/>
+    <circle cx="400" cy="250" r="3" opacity="0.4"/>
+    <circle cx="700" cy="300" r="4" opacity="0.4"/>
+    <circle cx="950" cy="480" r="3" opacity="0.4"/>
+    <circle cx="550" cy="550" r="4" opacity="0.4"/>
+    <circle cx="250" cy="650" r="3" opacity="0.4"/>
+    <circle cx="700" cy="700" r="4" opacity="0.3"/>
+    <circle cx="1050" cy="450" r="3" opacity="0.3"/>
+  </g>
+  
+  <!-- Pulse rings (decorative) -->
+  <g fill="none" stroke="#f59e0b">
+    <circle cx="500" cy="180" r="25" stroke-width="1" opacity="0.2"/>
+    <circle cx="500" cy="180" r="40" stroke-width="0.5" opacity="0.1"/>
+    <circle cx="600" cy="420" r="30" stroke-width="1" opacity="0.15"/>
+    <circle cx="600" cy="420" r="50" stroke-width="0.5" opacity="0.08"/>
+  </g>
+</svg>
