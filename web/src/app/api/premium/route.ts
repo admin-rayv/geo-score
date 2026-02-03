@@ -40,8 +40,8 @@ function getRootUrl(url: string): string {
   return `${parsed.protocol}//${parsed.host}`
 }
 
-// Parse sitemap.xml
-async function parseSitemap(rootUrl: string): Promise<string[]> {
+// Parse sitemap.xml - returns { found: boolean, urls: string[] }
+async function parseSitemap(rootUrl: string): Promise<{ found: boolean; urls: string[] }> {
   const sitemapUrls = [
     `${rootUrl}/sitemap.xml`,
     `${rootUrl}/sitemap_index.xml`,
@@ -72,31 +72,22 @@ async function parseSitemap(rootUrl: string): Promise<string[]> {
     } catch (e) {}
   }
   
+  // Filter URLs to only include those matching the root domain
+  const rootHost = new URL(rootUrl).host
+  urls = urls.filter(url => {
+    try {
+      return new URL(url).host === rootHost
+    } catch {
+      return false
+    }
+  })
+  
   urls = [...new Set(urls)].slice(0, MAX_PAGES)
   
-  if (urls.length === 0) {
-    urls = await crawlHomepageLinks(rootUrl)
-  }
-  
-  return urls
+  return { found: urls.length > 0, urls }
 }
 
-async function crawlHomepageLinks(rootUrl: string): Promise<string[]> {
-  try {
-    const html = await fetchUrl(rootUrl)
-    const $ = cheerio.load(html)
-    const links = new Set([rootUrl])
-    
-    $('a[href]').each((i, el) => {
-      const href = $(el).attr('href')
-      if (href) {
-        try {
-          const fullUrl = new URL(href, rootUrl)
-          if (fullUrl.origin === new URL(rootUrl).origin) {
-            links.add(`${fullUrl.origin}${fullUrl.pathname}`)
-          }
-        } catch (e) {}
-      }
+// Removed crawlHomepageLinks - sitemap is now required for premium report
     })
     
     return [...links].slice(0, MAX_PAGES)
@@ -374,7 +365,21 @@ export async function GET(request: NextRequest) {
     const startTime = Date.now()
     
     // Get pages from sitemap
-    const pageUrls = await parseSitemap(rootUrl)
+    const sitemap = await parseSitemap(rootUrl)
+    
+    // Sitemap is required for premium report
+    if (!sitemap.found) {
+      return NextResponse.json({
+        success: false,
+        error: 'No sitemap found',
+        errorCode: 'SITEMAP_REQUIRED',
+        message: 'A sitemap.xml is required for the Premium Report. This file helps AI search engines discover and index all your pages.',
+        tip: 'Create a sitemap.xml at your site root listing all your important pages. Most CMS (WordPress, Shopify, etc.) can generate this automatically.',
+        learnMore: 'https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap'
+      }, { status: 400 })
+    }
+    
+    const pageUrls = sitemap.urls
     
     // Analyze each page
     const pageResults = []

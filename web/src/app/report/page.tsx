@@ -202,11 +202,18 @@ function ActionItem({ item, index, urgency }: { item: any; index: number; urgenc
   )
 }
 
+interface ErrorState {
+  message: string
+  errorCode?: string
+  tip?: string
+  learnMore?: string
+}
+
 export default function ReportPage() {
   const [url, setUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [report, setReport] = useState<PremiumReport | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<ErrorState | null>(null)
   const [activeTab, setActiveTab] = useState<'overview' | 'pages' | 'actions'>('actions')
 
   const generateReport = async (e: React.FormEvent) => {
@@ -224,10 +231,15 @@ export default function ReportPage() {
       if (data.success) {
         setReport(data)
       } else {
-        setError(data.error || 'An error occurred')
+        setError({
+          message: data.message || data.error || 'An error occurred',
+          errorCode: data.errorCode,
+          tip: data.tip,
+          learnMore: data.learnMore
+        })
       }
     } catch (err) {
-      setError('Unable to connect to server')
+      setError({ message: 'Unable to connect to server' })
     } finally {
       setLoading(false)
     }
@@ -298,8 +310,31 @@ export default function ReportPage() {
             )}
             
             {error && (
-              <div className="mt-8 p-6 bg-red-50 rounded-xl border border-red-200 text-red-600">
-                {error}
+              <div className="mt-8 p-6 bg-red-50 rounded-xl border border-red-200">
+                {error.errorCode === 'SITEMAP_REQUIRED' ? (
+                  <div className="text-center">
+                    <div className="text-4xl mb-4">🗺️</div>
+                    <h3 className="text-lg font-bold text-red-700 mb-2">Sitemap Required</h3>
+                    <p className="text-red-600 mb-4">{error.message}</p>
+                    {error.tip && (
+                      <p className="text-gray-600 text-sm mb-4 bg-white p-4 rounded-lg">
+                        💡 <strong>Tip:</strong> {error.tip}
+                      </p>
+                    )}
+                    {error.learnMore && (
+                      <a 
+                        href={error.learnMore} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-amber-600 font-medium hover:underline"
+                      >
+                        Learn how to create a sitemap →
+                      </a>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-red-600">{error.message}</p>
+                )}
               </div>
             )}
           </div>
