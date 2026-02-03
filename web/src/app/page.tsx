@@ -94,7 +94,8 @@ function ScoreCircle({ score }: { score: number }) {
 function CategoryBar({ icon, name, score, maxScore, color }: { 
   icon: string; name: string; score: number; maxScore: number; color: string 
 }) {
-  const percentage = (score / maxScore) * 100
+  const safeScore = isNaN(score) || score === undefined || score === null ? 0 : score
+  const percentage = (safeScore / maxScore) * 100
   
   return (
     <div className="flex items-center gap-4 p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors">
@@ -104,7 +105,7 @@ function CategoryBar({ icon, name, score, maxScore, color }: {
       <div className="flex-1">
         <div className="flex justify-between mb-2">
           <span className="font-medium text-gray-900">{name}</span>
-          <span className="font-bold text-gray-900">{score}/{maxScore}</span>
+          <span className="font-bold text-gray-900">{safeScore}/{maxScore}</span>
         </div>
         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
           <div 
@@ -378,10 +379,10 @@ export default function Home() {
                     <div className="flex-1 w-full">
                       <h2 className="text-2xl font-bold text-gray-900 mb-6">Detailed Analysis</h2>
                       <div className="space-y-3">
-                        <CategoryBar icon="🤖" name="Machine Readability" score={result.categories.machineReadability.score} maxScore={25} color="bg-amber-100" />
-                        <CategoryBar icon="📊" name="Structured Data" score={result.categories.structuredData.score} maxScore={25} color="bg-orange-100" />
-                        <CategoryBar icon="📝" name="Extraction Format" score={result.categories.extractionFormat.score} maxScore={25} color="bg-yellow-100" />
-                        <CategoryBar icon="🔓" name="AI Bot Access" score={result.categories.botAccessibility.score} maxScore={25} color="bg-rose-100" />
+                        <CategoryBar icon="🤖" name="Machine Readability" score={result.categories?.machineReadability?.score ?? 0} maxScore={25} color="bg-amber-100" />
+                        <CategoryBar icon="📊" name="Structured Data" score={result.categories?.structuredData?.score ?? 0} maxScore={25} color="bg-orange-100" />
+                        <CategoryBar icon="📝" name="Extraction Format" score={result.categories?.extractionFormat?.score ?? 0} maxScore={25} color="bg-yellow-100" />
+                        <CategoryBar icon="🔓" name="AI Bot Access" score={result.categories?.botAccessibility?.score ?? 0} maxScore={25} color="bg-rose-100" />
                       </div>
                     </div>
                   </div>
