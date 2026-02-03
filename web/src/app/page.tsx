@@ -38,15 +38,17 @@ function ScoreCircle({ score }: { score: number }) {
   const offset = circumference - progress
   
   const getColor = (s: number) => {
-    if (s >= 75) return '#f59e0b' // amber
-    if (s >= 50) return '#fb923c' // orange
+    if (s >= 70) return '#22c55e' // green
+    if (s >= 50) return '#f59e0b' // amber
+    if (s >= 30) return '#fb923c' // orange
     return '#ef4444' // red
   }
   
   const getLabel = (s: number) => {
-    if (s >= 75) return { text: 'Excellent', color: 'text-amber-600', bg: 'bg-amber-100' }
-    if (s >= 50) return { text: 'À améliorer', color: 'text-orange-600', bg: 'bg-orange-100' }
-    return { text: 'Critique', color: 'text-red-600', bg: 'bg-red-100' }
+    if (s >= 70) return { text: 'Good', color: 'text-green-600', bg: 'bg-green-100' }
+    if (s >= 50) return { text: 'Average', color: 'text-amber-600', bg: 'bg-amber-100' }
+    if (s >= 30) return { text: 'Poor', color: 'text-orange-600', bg: 'bg-orange-100' }
+    return { text: 'Critical', color: 'text-red-600', bg: 'bg-red-100' }
   }
   
   const label = getLabel(score)
@@ -107,7 +109,7 @@ function CategoryBar({ icon, name, score, maxScore, color }: {
         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
           <div 
             className={`h-full rounded-full transition-all duration-1000 ${
-              percentage >= 75 ? 'bg-amber-500' : percentage >= 50 ? 'bg-orange-500' : 'bg-red-500'
+              percentage >= 70 ? 'bg-green-500' : percentage >= 50 ? 'bg-amber-500' : percentage >= 30 ? 'bg-orange-500' : 'bg-red-500'
             }`}
             style={{ width: `${percentage}%` }}
           />
@@ -135,7 +137,7 @@ function RecommendationCard({ rec, index }: { rec: Recommendation; index: number
           <div className="flex items-center gap-2 mb-1">
             <span className="text-sm text-gray-500">{rec.category}</span>
             <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${config.badge}`}>
-              {rec.priority === 'high' ? 'Prioritaire' : rec.priority === 'medium' ? 'Recommandé' : 'Optionnel'}
+              {rec.priority === 'high' ? 'Critical' : rec.priority === 'medium' ? 'Important' : 'Optional'}
             </span>
           </div>
           <p className="text-gray-900 font-medium">{rec.action}</p>
@@ -167,10 +169,10 @@ export default function Home() {
       if (data.success) {
         setResult(data)
       } else {
-        setError(data.error || 'Une erreur est survenue')
+        setError(data.error || 'An error occurred')
       }
     } catch (err) {
-      setError('Impossible de contacter le serveur')
+      setError('Unable to connect to server')
     } finally {
       setLoading(false)
     }
@@ -189,10 +191,10 @@ export default function Home() {
               <span className="text-xl font-bold text-gray-900">GEOScore</span>
             </div>
             <div className="flex items-center gap-6">
-              <a href="#how" className="text-gray-600 hover:text-amber-600 transition-colors font-medium">Comment ça marche</a>
-              <a href="#pricing" className="text-gray-600 hover:text-amber-600 transition-colors font-medium">Tarifs</a>
+              <a href="#how" className="text-gray-600 hover:text-amber-600 transition-colors font-medium">How it works</a>
+              <a href="#pricing" className="text-gray-600 hover:text-amber-600 transition-colors font-medium">Pricing</a>
               <a href="/report" className="px-4 py-2 bg-amber-500 text-white rounded-lg font-medium hover:bg-amber-600 transition-colors">
-                Rapport Premium
+                Premium Report
               </a>
             </div>
           </div>
@@ -278,18 +280,18 @@ export default function Home() {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-md mb-8">
               <span className="w-2 h-2 rounded-full bg-amber-500"></span>
-              <span className="text-sm font-medium text-gray-700">Analyse gratuite et instantanée</span>
+              <span className="text-sm font-medium text-gray-700">Free instant analysis</span>
             </div>
             
             {/* Headline */}
             <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
-              Votre site est-il visible pour{' '}
+              Is your site visible to{' '}
               <span className="gradient-text">ChatGPT</span>?
             </h1>
             
             <p className="text-xl text-gray-600 mb-10 leading-relaxed">
-              Testez votre optimisation GEO et découvrez comment les moteurs IA 
-              (ChatGPT, Claude, Gemini, Perplexity) perçoivent votre site.
+              Test your GEO optimization and discover how AI search engines 
+              (ChatGPT, Claude, Gemini, Perplexity) see your website.
             </p>
             
             {/* URL Input */}
@@ -305,7 +307,7 @@ export default function Home() {
                     type="text"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
-                    placeholder="https://votre-site.com"
+                    placeholder="https://your-site.com"
                     className="w-full pl-12 pr-4 py-4 rounded-xl input-modern text-lg"
                     disabled={loading}
                   />
@@ -321,10 +323,10 @@ export default function Home() {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                       </svg>
-                      Analyse...
+                      Analyzing...
                     </span>
                   ) : (
-                    'Analyser mon site'
+                    'Analyze my site'
                   )}
                 </button>
               </div>
@@ -336,19 +338,19 @@ export default function Home() {
                 <svg className="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                Gratuit
+                Free
               </span>
               <span className="flex items-center gap-1.5">
                 <svg className="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                Sans inscription
+                No signup
               </span>
               <span className="flex items-center gap-1.5">
                 <svg className="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                Résultats en 10 sec
+                Results in 10 sec
               </span>
             </div>
           </div>
@@ -364,7 +366,7 @@ export default function Home() {
               <div className="card rounded-2xl p-8 text-center border-red-200 bg-red-50">
                 <div className="text-5xl mb-4">😕</div>
                 <p className="text-red-600 text-lg font-medium">{error}</p>
-                <p className="text-red-500 mt-2">Vérifiez l'URL et réessayez.</p>
+                <p className="text-red-500 mt-2">Please check the URL and try again.</p>
               </div>
             ) : result && (
               <div className="space-y-8">
@@ -374,45 +376,47 @@ export default function Home() {
                     <ScoreCircle score={result.score} />
                     
                     <div className="flex-1 w-full">
-                      <h2 className="text-2xl font-bold text-gray-900 mb-6">Analyse détaillée</h2>
+                      <h2 className="text-2xl font-bold text-gray-900 mb-6">Detailed Analysis</h2>
                       <div className="space-y-3">
-                        <CategoryBar icon="🤖" name="Lisibilité Machine" score={result.categories.machineReadability.score} maxScore={25} color="bg-amber-100" />
-                        <CategoryBar icon="📊" name="Données Structurées" score={result.categories.structuredData.score} maxScore={25} color="bg-orange-100" />
-                        <CategoryBar icon="📝" name="Formatage" score={result.categories.extractionFormat.score} maxScore={25} color="bg-yellow-100" />
-                        <CategoryBar icon="🔓" name="Accès Bots IA" score={result.categories.botAccessibility.score} maxScore={25} color="bg-rose-100" />
+                        <CategoryBar icon="🤖" name="Machine Readability" score={result.categories.machineReadability.score} maxScore={25} color="bg-amber-100" />
+                        <CategoryBar icon="📊" name="Structured Data" score={result.categories.structuredData.score} maxScore={25} color="bg-orange-100" />
+                        <CategoryBar icon="📝" name="Extraction Format" score={result.categories.extractionFormat.score} maxScore={25} color="bg-yellow-100" />
+                        <CategoryBar icon="🔓" name="AI Bot Access" score={result.categories.botAccessibility.score} maxScore={25} color="bg-rose-100" />
                       </div>
                     </div>
                   </div>
                   
                   <div className="mt-8 pt-6 border-t border-gray-100 text-center">
-                    <span className="text-gray-500">Site analysé: </span>
+                    <span className="text-gray-500">Site analyzed: </span>
                     <span className="font-medium text-gray-900">{result.url}</span>
                   </div>
                 </div>
 
                 {/* Recommendations */}
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                    🎯 Top 3 actions à faire
-                  </h3>
-                  <div className="space-y-4">
-                    {result.recommendations.slice(0, 3).map((rec, i) => (
-                      <RecommendationCard key={i} rec={rec} index={i} />
-                    ))}
+                {result.recommendations.length > 0 && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
+                      🎯 Top 3 Actions
+                    </h3>
+                    <div className="space-y-4">
+                      {result.recommendations.slice(0, 3).map((rec, i) => (
+                        <RecommendationCard key={i} rec={rec} index={i} />
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Upsell */}
                 <div className="card rounded-3xl p-8 bg-gradient-to-br from-amber-50 to-orange-50 border-amber-200">
                   <div className="flex flex-col md:flex-row items-center gap-8">
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Vous voulez aller plus loin?</h3>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-3">Want the full picture?</h3>
                       <p className="text-gray-600 mb-4">
-                        Obtenez le rapport complet avec toutes les recommandations, des exemples 
-                        de code et une checklist d'implémentation.
+                        Get the complete report with all recommendations, code examples, 
+                        and an implementation checklist.
                       </p>
                       <ul className="space-y-2">
-                        {['Toutes les recommandations détaillées', 'Exemples JSON-LD prêts à copier', 'Checklist PDF imprimable'].map((item, i) => (
+                        {['All detailed recommendations', 'Copy-paste JSON-LD examples', 'Printable PDF checklist'].map((item, i) => (
                           <li key={i} className="flex items-center gap-2 text-gray-700">
                             <svg className="w-5 h-5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -423,11 +427,11 @@ export default function Home() {
                       </ul>
                     </div>
                     <div className="flex flex-col gap-3 shrink-0">
-                      <button className="btn-primary px-8 py-4 rounded-xl text-lg">
-                        Rapport complet — 29$
-                      </button>
+                      <a href="/report" className="btn-primary px-8 py-4 rounded-xl text-lg text-center">
+                        Full Report — $29
+                      </a>
                       <button className="btn-secondary px-8 py-4 rounded-xl text-lg">
-                        Guide GEO PDF — 49,99$
+                        GEO Guide PDF — $49.99
                       </button>
                     </div>
                   </div>
@@ -444,13 +448,13 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
               <span className="inline-block px-4 py-1.5 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold mb-4">
-                Pourquoi c'est important
+                Why it matters
               </span>
               <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-                Le <span className="gradient-text">GEO</span>, c'est le nouveau SEO
+                <span className="gradient-text">GEO</span> is the new SEO
               </h2>
               <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-                Les moteurs IA changent la donne. Votre site doit s'adapter.
+                AI search engines are changing the game. Your site needs to adapt.
               </p>
             </div>
             
@@ -462,10 +466,10 @@ export default function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   ),
-                  title: 'Les IA citent des sources', 
-                  desc: 'ChatGPT, Claude et Perplexity recommandent des sites à plus de 100 millions d\'utilisateurs. Si votre contenu n\'est pas optimisé, vous êtes invisible.',
+                  title: 'AI engines cite sources', 
+                  desc: 'ChatGPT, Claude, and Perplexity recommend sites to 100+ million users. If your content isn\'t optimized, you\'re invisible.',
                   stat: '100M+',
-                  statLabel: 'utilisateurs IA'
+                  statLabel: 'AI users'
                 },
                 { 
                   icon: (
@@ -474,9 +478,9 @@ export default function Home() {
                     </svg>
                   ),
                   title: 'SEO ≠ GEO', 
-                  desc: 'Les LLM n\'analysent pas comme Google. Ils cherchent des données structurées, du schema.org, et une sémantique claire.',
+                  desc: 'LLMs don\'t analyze like Google. They look for structured data, schema.org, and clear semantics.',
                   stat: '4x',
-                  statLabel: 'plus de schema requis'
+                  statLabel: 'more schema needed'
                 },
                 { 
                   icon: (
@@ -484,10 +488,10 @@ export default function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                   ),
-                  title: 'Vos bots IA sont-ils bloqués?', 
-                  desc: 'Beaucoup de sites bloquent GPTBot, ClaudeBot ou PerplexityBot par erreur dans leur robots.txt. On vérifie ça pour vous.',
+                  title: 'Are your AI bots blocked?', 
+                  desc: 'Many sites accidentally block GPTBot, ClaudeBot or PerplexityBot in their robots.txt. We check that for you.',
                   stat: '67%',
-                  statLabel: 'des sites bloquent les IA'
+                  statLabel: 'of sites block AI'
                 },
                 { 
                   icon: (
@@ -495,10 +499,10 @@ export default function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
                     </svg>
                   ),
-                  title: 'Actions concrètes', 
-                  desc: 'Pas juste un score — des recommandations actionnables avec des exemples de code que vous pouvez implémenter immédiatement.',
+                  title: 'Actionable insights', 
+                  desc: 'Not just a score — get concrete recommendations with code examples you can implement immediately.',
                   stat: '10 min',
-                  statLabel: 'pour implémenter'
+                  statLabel: 'to implement'
                 },
               ].map((item, i) => (
                 <div key={i} className="group bg-white rounded-2xl p-8 border border-amber-100 hover:border-amber-300 hover:shadow-xl hover:shadow-amber-100/50 transition-all duration-300">
@@ -526,50 +530,50 @@ export default function Home() {
       <section id="pricing" className="py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Tarification simple</h2>
-            <p className="text-xl text-gray-600">Analyse gratuite. Payez seulement pour plus de détails.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Simple Pricing</h2>
+            <p className="text-xl text-gray-600">Free analysis. Pay only for more details.</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
             {/* Free */}
             <div className="card rounded-2xl p-8">
-              <div className="text-amber-600 font-semibold mb-2">Gratuit</div>
-              <div className="text-4xl font-bold text-gray-900 mb-6">0$</div>
+              <div className="text-amber-600 font-semibold mb-2">Free</div>
+              <div className="text-4xl font-bold text-gray-900 mb-6">$0</div>
               <ul className="space-y-3 text-gray-600 mb-8">
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Score GEO global</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> 4 catégories</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> 3 recommandations</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Overall GEO score</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> 4 categories breakdown</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Top 3 recommendations</li>
               </ul>
-              <button className="btn-secondary w-full py-3 rounded-xl">Commencer</button>
+              <button className="btn-secondary w-full py-3 rounded-xl">Get Started</button>
             </div>
             
             {/* Report */}
             <div className="pricing-popular rounded-2xl p-8 relative shadow-xl">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-                Populaire
+                Popular
               </div>
-              <div className="text-amber-600 font-semibold mb-2">Rapport Complet</div>
-              <div className="text-4xl font-bold text-gray-900 mb-6">29$</div>
+              <div className="text-amber-600 font-semibold mb-2">Full Report</div>
+              <div className="text-4xl font-bold text-gray-900 mb-6">$29</div>
               <ul className="space-y-3 text-gray-600 mb-8">
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Tout le gratuit</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Toutes les recos</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Exemples de code</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Checklist PDF</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Everything in Free</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> All recommendations</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Code examples</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> PDF checklist</li>
               </ul>
-              <button className="btn-primary w-full py-3 rounded-xl">Acheter</button>
+              <button className="btn-primary w-full py-3 rounded-xl">Buy Now</button>
             </div>
             
             {/* Guide */}
             <div className="card rounded-2xl p-8">
-              <div className="text-amber-600 font-semibold mb-2">Guide GEO</div>
-              <div className="text-4xl font-bold text-gray-900 mb-6">49,99$</div>
+              <div className="text-amber-600 font-semibold mb-2">GEO Guide</div>
+              <div className="text-4xl font-bold text-gray-900 mb-6">$49.99</div>
               <ul className="space-y-3 text-gray-600 mb-8">
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> eBook complet</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Templates robots.txt</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Templates llms.txt</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> JSON-LD exemples</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Complete eBook</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> robots.txt templates</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> llms.txt templates</li>
+                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> JSON-LD examples</li>
               </ul>
-              <button className="btn-secondary w-full py-3 rounded-xl">Acheter</button>
+              <button className="btn-secondary w-full py-3 rounded-xl">Buy Now</button>
             </div>
           </div>
         </div>
@@ -583,42 +587,42 @@ export default function Home() {
               FAQ
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Questions fréquentes
+              Frequently Asked Questions
             </h2>
             <p className="text-xl text-gray-500">
-              Tout ce que vous devez savoir sur le GEO
+              Everything you need to know about GEO
             </p>
           </div>
           
           <div className="space-y-4">
             {[
               {
-                q: "C'est quoi le GEO exactement?",
-                a: "GEO signifie Generative Engine Optimization. C'est l'optimisation de votre site pour les moteurs de recherche basés sur l'IA comme ChatGPT, Claude, Gemini et Perplexity. Contrairement au SEO traditionnel qui optimise pour Google, le GEO optimise pour que les IA comprennent et citent votre contenu."
+                q: "What exactly is GEO?",
+                a: "GEO stands for Generative Engine Optimization. It's the optimization of your website for AI-powered search engines like ChatGPT, Claude, Gemini, and Perplexity. Unlike traditional SEO that optimizes for Google, GEO optimizes for AI to understand and cite your content."
               },
               {
-                q: "Quelle est la différence entre SEO et GEO?",
-                a: "Le SEO optimise pour les crawlers traditionnels (Google, Bing) qui indexent des pages. Le GEO optimise pour les LLM qui analysent la structure sémantique, les données structurées (JSON-LD), et la lisibilité machine. Un bon SEO ne garantit pas un bon GEO — les critères sont différents."
+                q: "What's the difference between SEO and GEO?",
+                a: "SEO optimizes for traditional crawlers (Google, Bing) that index pages. GEO optimizes for LLMs that analyze semantic structure, structured data (JSON-LD), and machine readability. Good SEO doesn't guarantee good GEO — the criteria are different."
               },
               {
-                q: "Comment fonctionne l'analyse GEOScore?",
-                a: "Notre outil analyse 4 catégories: la lisibilité machine (HTML sémantique, hiérarchie des titres), les données structurées (JSON-LD, Schema.org), le formatage pour extraction (FAQ, meta descriptions), et l'accessibilité aux bots IA (robots.txt, llms.txt). Chaque catégorie vaut 25 points pour un total de 100."
+                q: "How does the GEOScore analysis work?",
+                a: "Our tool analyzes 4 categories: machine readability (semantic HTML, heading hierarchy), structured data (JSON-LD, Schema.org), extraction format (FAQ, meta descriptions), and AI bot accessibility (robots.txt, llms.txt). Each category is worth 25 points for a total of 100."
               },
               {
-                q: "C'est quoi le fichier llms.txt?",
-                a: "Le llms.txt est un nouveau standard (comme robots.txt) qui permet de donner des instructions spécifiques aux LLM sur comment interpréter votre site. C'est optionnel mais recommandé pour un meilleur contrôle sur comment les IA présentent votre contenu."
+                q: "What is the llms.txt file?",
+                a: "llms.txt is a new standard (like robots.txt) that lets you give specific instructions to LLMs about how to interpret your site. It's optional but recommended for better control over how AI presents your content."
               },
               {
-                q: "Pourquoi mon score est bas alors que mon SEO est bon?",
-                a: "Un bon SEO ne garantit pas un bon GEO. Les problèmes courants: manque de données structurées JSON-LD, bots IA bloqués dans robots.txt, pas de FAQ structurée, HTML non-sémantique (trop de divs), ou rendu côté client (CSR) qui empêche les bots de lire le contenu."
+                q: "Why is my score low even though my SEO is good?",
+                a: "Good SEO doesn't guarantee good GEO. Common issues: missing JSON-LD structured data, AI bots blocked in robots.txt, no structured FAQ, non-semantic HTML (too many divs), or client-side rendering (CSR) that prevents bots from reading content."
               },
               {
-                q: "Le rapport complet inclut quoi de plus?",
-                a: "Le rapport complet (29$) inclut: toutes les recommandations détaillées (pas juste le top 3), des exemples de code JSON-LD prêts à copier-coller, un template robots.txt optimisé GEO, et une checklist PDF imprimable pour suivre votre progression."
+                q: "What's included in the full report?",
+                a: "The full report ($29) includes: all detailed recommendations (not just top 3), copy-paste JSON-LD code examples, GEO-optimized robots.txt template, and a printable PDF checklist to track your progress."
               },
               {
-                q: "Est-ce que l'analyse est vraiment gratuite?",
-                a: "Oui! L'analyse de base avec le score GEO, le breakdown des 4 catégories et les 3 recommandations prioritaires est 100% gratuite, sans inscription requise. Vous payez seulement si vous voulez le rapport complet ou le guide PDF."
+                q: "Is the analysis really free?",
+                a: "Yes! The basic analysis with GEO score, 4-category breakdown, and top 3 priority recommendations is 100% free, no signup required. You only pay if you want the full report or PDF guide."
               },
             ].map((item, i) => (
               <details key={i} className="group bg-gray-50 rounded-2xl overflow-hidden">
@@ -638,7 +642,7 @@ export default function Home() {
           </div>
           
           <div className="mt-12 text-center p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100">
-            <p className="text-gray-600 mb-4">Vous avez d'autres questions?</p>
+            <p className="text-gray-600 mb-4">Have more questions?</p>
             <a href="mailto:info@geoscore.com" className="inline-flex items-center gap-2 text-amber-600 font-semibold hover:text-amber-700">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -660,7 +664,7 @@ export default function Home() {
               <span className="font-bold text-gray-900">GEOScore</span>
             </div>
             <p className="text-gray-500 text-sm">
-              © 2026 GEOScore. Propulsé par{' '}
+              © 2026 GEOScore. Powered by{' '}
               <a href="https://rayv.ca" className="text-amber-600 hover:underline">RayV</a>
             </p>
           </div>

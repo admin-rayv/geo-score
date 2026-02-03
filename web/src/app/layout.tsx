@@ -5,12 +5,12 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'GEOScore - Calculateur de Score GEO',
-  description: 'Analysez l\'optimisation de votre site web pour les moteurs de recherche IA (ChatGPT, Gemini, Claude, Perplexity). Score gratuit + recommandations.',
-  keywords: 'GEO, SEO, AI, LLM, optimisation, ChatGPT, Claude, Gemini, Perplexity',
+  title: 'GEOScore - GEO Score Calculator',
+  description: 'Analyze your website optimization for AI search engines (ChatGPT, Gemini, Claude, Perplexity). Free score + recommendations.',
+  keywords: 'GEO, SEO, AI, LLM, optimization, ChatGPT, Claude, Gemini, Perplexity',
   openGraph: {
-    title: 'GEOScore - Votre site est-il prêt pour l\'IA?',
-    description: 'Calculateur gratuit de score GEO. Découvrez comment les moteurs IA voient votre site.',
+    title: 'GEOScore - Is Your Site Ready for AI?',
+    description: 'Free GEO score calculator. Discover how AI engines see your site.',
     type: 'website',
   },
 }
@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="fr">
+    <html lang="en">
       <body className={inter.className}>{children}</body>
     </html>
   )

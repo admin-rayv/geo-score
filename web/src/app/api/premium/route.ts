@@ -6,16 +6,11 @@ const DEFAULT_USER_AGENT = 'GEOScoreBot/1.0 (+https://geoscore.com)'
 const TIMEOUT = 15000
 const MAX_PAGES = 20
 
-// Bots IA connus
+// AI Bots
 const AI_BOTS = [
   'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot',
   'anthropic-ai', 'Claude-Web', 'PerplexityBot', 'Amazonbot',
   'Google-Extended', 'GoogleOther', 'cohere-ai', 'Bytespider'
-]
-
-const IMPORTANT_SCHEMAS = [
-  'Organization', 'LocalBusiness', 'Person', 'Service',
-  'Product', 'FAQPage', 'HowTo', 'Article', 'WebPage', 'BreadcrumbList'
 ]
 
 // Fetch helper
@@ -110,7 +105,7 @@ async function crawlHomepageLinks(rootUrl: string): Promise<string[]> {
   }
 }
 
-// Analyze a single page (simplified version)
+// Analyze a single page
 function analyzePageContent($: cheerio.CheerioAPI, html: string, robotsTxt: string | null, llmsTxt: string | null) {
   // Machine Readability
   const semanticTags = ['article', 'section', 'aside', 'nav', 'header', 'footer', 'main', 'details']
@@ -152,7 +147,7 @@ function analyzePageContent($: cheerio.CheerioAPI, html: string, robotsTxt: stri
   
   // Extraction Format
   let efScore = 0
-  const hasFaq = $('details').length > 0 || $('[class*="faq"]').length > 0
+  const hasFaq = $('details').length > 0 || $('[class*="faq"]').length > 0 || $('[class*="accordion"]').length > 0
   if (hasFaq) efScore += 7
   
   const metaDesc = $('meta[name="description"]').attr('content')
@@ -165,7 +160,7 @@ function analyzePageContent($: cheerio.CheerioAPI, html: string, robotsTxt: stri
   if ($('table thead').length > 0) efScore += 4
   
   // Bot Accessibility
-  let baScore = 8 // Default if no robots.txt
+  let baScore = 8
   if (robotsTxt) {
     const hasBlock = /Disallow:\s*\/\s*$/m.test(robotsTxt)
     baScore = hasBlock ? 2 : 8
@@ -185,54 +180,69 @@ function analyzePageContent($: cheerio.CheerioAPI, html: string, robotsTxt: stri
   
   const totalScore = mrScore + sdScore + efScore + baScore
   
-  // Generate recommendations
+  // Generate recommendations (in English)
   const recommendations: any[] = []
   
   if (missingSemantic.length > 3) {
     recommendations.push({
-      category: 'Lisibilité Machine',
+      category: 'Machine Readability',
       priority: 'high',
-      action: 'Ajouter des balises HTML5 sémantiques (article, section, aside)'
+      action: 'Add semantic HTML5 tags (article, section, aside, main)'
     })
   }
   
   if (h1Count !== 1) {
     recommendations.push({
-      category: 'Lisibilité Machine',
+      category: 'Machine Readability',
       priority: 'high',
-      action: h1Count === 0 ? 'Ajouter un H1 unique' : 'Corriger: un seul H1 par page'
+      action: h1Count === 0 ? 'Add a unique H1 heading to this page' : 'Fix: only one H1 per page is recommended'
     })
   }
   
   if (jsonLdScripts.length === 0) {
     recommendations.push({
-      category: 'Données Structurées',
+      category: 'Structured Data',
       priority: 'high',
-      action: 'Ajouter des schemas JSON-LD (Organization, FAQPage, etc.)'
+      action: 'Add JSON-LD structured data (Organization, FAQPage, etc.)'
     })
   }
   
   if (!metaDesc) {
     recommendations.push({
-      category: 'Formatage',
+      category: 'Extraction Format',
       priority: 'high',
-      action: 'Ajouter une meta description (120-160 caractères)'
+      action: 'Add a meta description (120-160 characters)'
+    })
+  } else if (metaDesc.length < 120 || metaDesc.length > 160) {
+    recommendations.push({
+      category: 'Extraction Format',
+      priority: 'medium',
+      action: `Optimize meta description length (currently ${metaDesc.length} chars, ideal: 120-160)`
     })
   }
   
   if (!hasFaq) {
     recommendations.push({
-      category: 'Formatage',
+      category: 'Extraction Format',
       priority: 'medium',
-      action: 'Ajouter une FAQ avec <details>/<summary>'
+      action: 'Add FAQ section using <details>/<summary> elements'
     })
   }
   
   if (!llmsTxt) {
     recommendations.push({
-      category: 'Accessibilité Bots',
+      category: 'Bot Accessibility',
       priority: 'medium',
-      action: 'Créer un fichier llms.txt'
+      action: 'Create an llms.txt file to guide AI crawlers'
+    })
+  }
+  
+  if (images.length > 0 && imagesWithAlt < images.length) {
+    const missing = images.length - imagesWithAlt
+    recommendations.push({
+      category: 'Bot Accessibility',
+      priority: 'medium',
+      action: `Add alt text to ${missing} image${missing > 1 ? 's' : ''}`
     })
   }
   
@@ -272,41 +282,86 @@ async function analyzePage(url: string, rootUrl: string) {
   }
 }
 
-// Priority action plan
-function generateActionPlan(allRecs: any[]) {
+// Smart action plan based on score
+function generateActionPlan(allRecs: any[], avgScore: number) {
   const seen = new Set()
-  const quickWins: any[] = []
-  const mediumProjects: any[] = []
+  const critical: any[] = []
+  const important: any[] = []
+  const improvements: any[] = []
+  
+  // Determine urgency thresholds based on overall score
+  const isCriticalSite = avgScore < 30
+  const isPoorSite = avgScore < 50
   
   allRecs.forEach(rec => {
     if (seen.has(rec.action)) return
     seen.add(rec.action)
     
-    const item = { ...rec }
+    // Estimate time and impact
+    let time = '1-2 hours'
+    let impact = 2
     
-    if (rec.action.includes('meta description') || rec.action.includes('H1')) {
-      item.time = '5-10 min'
-      item.impact = 3
-      quickWins.push(item)
-    } else if (rec.action.includes('JSON-LD') || rec.action.includes('llms.txt')) {
-      item.time = '30 min'
-      item.impact = 3
-      mediumProjects.push(item)
+    if (rec.action.includes('meta description')) {
+      time = '5 min'
+      impact = 2
+    } else if (rec.action.includes('H1')) {
+      time = '5 min'
+      impact = 3
+    } else if (rec.action.includes('JSON-LD')) {
+      time = '30 min'
+      impact = 3
+    } else if (rec.action.includes('llms.txt')) {
+      time = '15 min'
+      impact = 2
+    } else if (rec.action.includes('alt text')) {
+      time = '15-30 min'
+      impact = 2
+    } else if (rec.action.includes('semantic')) {
+      time = '1-2 hours'
+      impact = 3
+    } else if (rec.action.includes('FAQ')) {
+      time = '30 min'
+      impact = 2
+    }
+    
+    const item = { ...rec, time, impact }
+    
+    // Categorize based on site score AND recommendation priority
+    if (isCriticalSite) {
+      // Critical site: high priority = critical, everything else = important
+      if (rec.priority === 'high') {
+        critical.push(item)
+      } else {
+        important.push(item)
+      }
+    } else if (isPoorSite) {
+      // Poor site: high = important, medium = improvements
+      if (rec.priority === 'high') {
+        important.push(item)
+      } else {
+        improvements.push(item)
+      }
     } else {
-      item.time = '1h+'
-      item.impact = 2
-      mediumProjects.push(item)
+      // Average/good site: everything is improvements
+      improvements.push(item)
     }
   })
   
-  return { quickWins: quickWins.slice(0, 5), mediumProjects: mediumProjects.slice(0, 5) }
+  // Sort by impact (highest first)
+  const sortByImpact = (a: any, b: any) => b.impact - a.impact
+  
+  return { 
+    critical: critical.sort(sortByImpact).slice(0, 5), 
+    important: important.sort(sortByImpact).slice(0, 5), 
+    improvements: improvements.sort(sortByImpact).slice(0, 5)
+  }
 }
 
 export async function GET(request: NextRequest) {
   const url = request.nextUrl.searchParams.get('url')
   
   if (!url) {
-    return NextResponse.json({ success: false, error: 'URL requise' }, { status: 400 })
+    return NextResponse.json({ success: false, error: 'URL required' }, { status: 400 })
   }
   
   let normalizedUrl = url.trim()
@@ -334,6 +389,13 @@ export async function GET(request: NextRequest) {
     const successful = pageResults.filter(p => p.success)
     const avgScore = successful.length ? Math.round(successful.reduce((s, p) => s + p.score, 0) / successful.length) : 0
     
+    // Determine score level
+    let scoreLevel: 'critical' | 'poor' | 'average' | 'good'
+    if (avgScore < 30) scoreLevel = 'critical'
+    else if (avgScore < 50) scoreLevel = 'poor'
+    else if (avgScore < 70) scoreLevel = 'average'
+    else scoreLevel = 'good'
+    
     // Aggregate recommendations
     const allRecs: any[] = []
     pageResults.forEach(p => {
@@ -342,10 +404,10 @@ export async function GET(request: NextRequest) {
       }
     })
     
-    const actionPlan = generateActionPlan(allRecs)
+    const actionPlan = generateActionPlan(allRecs, avgScore)
     
-    // Problem pages
-    const problemPages = successful.filter(p => p.score < 50).sort((a, b) => a.score - b.score).slice(0, 5)
+    // Problem pages (score < 40)
+    const problemPages = successful.filter(p => p.score < 40).sort((a, b) => a.score - b.score).slice(0, 5)
     
     return NextResponse.json({
       success: true,
@@ -361,7 +423,8 @@ export async function GET(request: NextRequest) {
         averageScore: avgScore,
         potentialScore: Math.min(100, avgScore + 30),
         lowestScore: successful.length ? Math.min(...successful.map(p => p.score)) : 0,
-        highestScore: successful.length ? Math.max(...successful.map(p => p.score)) : 0
+        highestScore: successful.length ? Math.max(...successful.map(p => p.score)) : 0,
+        scoreLevel
       },
       pages: pageResults.map(p => ({
         url: p.url,

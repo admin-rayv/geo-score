@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import * as cheerio from 'cheerio'
 
-// Bots IA connus
+// Known AI Bots
 const AI_BOTS = [
   'GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot',
   'anthropic-ai', 'Claude-Web', 'PerplexityBot', 'Amazonbot',
@@ -72,8 +72,8 @@ function analyzeMachineReadability($: cheerio.CheerioAPI) {
   const h3Count = $('h3').length
   
   if (h1Count === 1) details.headingHierarchy.score += 3
-  else if (h1Count === 0) details.headingHierarchy.issues.push('Aucun H1')
-  else details.headingHierarchy.issues.push(`Multiple H1 (${h1Count})`)
+  else if (h1Count === 0) details.headingHierarchy.issues.push('No H1 found')
+  else details.headingHierarchy.issues.push(`Multiple H1 tags (${h1Count})`)
   
   if (h2Count > 0) details.headingHierarchy.score += 2
   if (h3Count > 0 && h2Count > 0) details.headingHierarchy.score += 2
@@ -274,146 +274,146 @@ function generateRecommendations(categories: any) {
   const mr = categories.machineReadability.details
   if (mr.semanticElements.missing.length > 3) {
     recommendations.push({
-      category: 'Lisibilité Machine',
+      category: 'Machine Readability',
       priority: 'high',
-      issue: `Éléments sémantiques manquants: ${mr.semanticElements.missing.slice(0, 3).join(', ')}`,
-      action: 'Remplacer les <div> par des balises HTML5 sémantiques (article, section, aside)'
+      issue: `Missing semantic elements: ${mr.semanticElements.missing.slice(0, 3).join(', ')}`,
+      action: 'Replace <div> with semantic HTML5 tags (article, section, aside)'
     })
   }
   if (mr.headingHierarchy.issues.length > 0) {
     recommendations.push({
-      category: 'Lisibilité Machine',
+      category: 'Machine Readability',
       priority: 'high',
       issue: mr.headingHierarchy.issues[0],
-      action: 'Corriger la hiérarchie: un seul H1, suivi de H2, puis H3'
+      action: 'Fix heading hierarchy: one H1, followed by H2, then H3'
     })
   }
   if (!mr.ssrDetection.isSSR) {
     recommendations.push({
-      category: 'Lisibilité Machine',
+      category: 'Machine Readability',
       priority: 'medium',
-      issue: 'Site en rendu côté client (CSR)',
-      action: 'Envisager SSR ou pre-rendering pour les bots'
+      issue: 'Site uses client-side rendering (CSR)',
+      action: 'Consider SSR or pre-rendering for better bot crawling'
     })
   }
   
   const sd = categories.structuredData.details
   if (!sd.jsonLdPresent.found) {
     recommendations.push({
-      category: 'Données Structurées',
+      category: 'Structured Data',
       priority: 'high',
-      issue: 'Aucun JSON-LD trouvé',
-      action: 'Ajouter des schemas JSON-LD (Organization, FAQPage, etc.)'
+      issue: 'No JSON-LD found',
+      action: 'Add JSON-LD schemas (Organization, FAQPage, etc.)'
     })
   } else if (sd.schemaTypes.types.length < 2) {
     recommendations.push({
-      category: 'Données Structurées',
+      category: 'Structured Data',
       priority: 'medium',
-      issue: `Seulement ${sd.schemaTypes.types.length} type(s) de schema`,
-      action: 'Enrichir avec FAQPage, HowTo, BreadcrumbList'
+      issue: `Only ${sd.schemaTypes.types.length} schema type(s) found`,
+      action: 'Enrich with FAQPage, HowTo, BreadcrumbList'
     })
   }
   
   const ef = categories.extractionFormat.details
   if (!ef.faqDetected.found) {
     recommendations.push({
-      category: 'Formatage Extraction',
+      category: 'Extraction Format',
       priority: 'medium',
-      issue: 'Aucune FAQ détectée',
-      action: 'Ajouter une FAQ avec <details>/<summary> ou schema FAQPage'
+      issue: 'No FAQ detected',
+      action: 'Add FAQ with <details>/<summary> or FAQPage schema'
     })
   }
   if (!ef.metaDescription.present) {
     recommendations.push({
-      category: 'Formatage Extraction',
+      category: 'Extraction Format',
       priority: 'high',
-      issue: 'Meta description manquante',
-      action: 'Ajouter une meta description de 120-160 caractères'
+      issue: 'Missing meta description',
+      action: 'Add meta description (120-160 characters)'
     })
   }
   
   const ba = categories.botAccessibility.details
   if (ba.robotsTxt.aiBotsBlocked.length > 0) {
     recommendations.push({
-      category: 'Accessibilité Bots',
+      category: 'Bot Accessibility',
       priority: 'high',
-      issue: `Bots IA bloqués: ${ba.robotsTxt.aiBotsBlocked.slice(0, 3).join(', ')}`,
-      action: 'Autoriser les bots IA dans robots.txt'
+      issue: `AI bots blocked: ${ba.robotsTxt.aiBotsBlocked.slice(0, 3).join(', ')}`,
+      action: 'Allow AI bots in robots.txt'
     })
   }
   if (!ba.llmsTxt.present) {
     recommendations.push({
-      category: 'Accessibilité Bots',
+      category: 'Bot Accessibility',
       priority: 'medium',
-      issue: 'Fichier llms.txt non trouvé',
-      action: 'Créer un fichier llms.txt pour guider les LLM'
+      issue: 'No llms.txt file found',
+      action: 'Create an llms.txt file to guide AI crawlers'
     })
   }
   if (ba.altText.total > 0 && ba.altText.withAlt < ba.altText.total) {
     recommendations.push({
-      category: 'Accessibilité Bots',
+      category: 'Bot Accessibility',
       priority: 'medium',
-      issue: `${ba.altText.total - ba.altText.withAlt} image(s) sans alt`,
-      action: 'Ajouter des attributs alt à toutes les images'
+      issue: `${ba.altText.total - ba.altText.withAlt} image(s) without alt text`,
+      action: 'Add alt attributes to all images'
     })
   }
   
-  // Recommandations supplémentaires pour toujours avoir du contenu
+  // Additional recommendations for more content
   if (mr.semanticElements.missing.length > 0 && mr.semanticElements.missing.length <= 3) {
     recommendations.push({
-      category: 'Lisibilité Machine',
+      category: 'Machine Readability',
       priority: 'low',
-      issue: `Éléments sémantiques à ajouter: ${mr.semanticElements.missing.join(', ')}`,
-      action: 'Ajouter les balises HTML5 manquantes pour améliorer la structure'
+      issue: `Semantic elements to add: ${mr.semanticElements.missing.join(', ')}`,
+      action: 'Add missing HTML5 tags to improve structure'
     })
   }
   
   if (mr.divRatio.ratio < 0.3 && mr.divRatio.score < 5) {
     recommendations.push({
-      category: 'Lisibilité Machine',
+      category: 'Machine Readability',
       priority: 'low',
-      issue: 'Ratio éléments sémantiques/divs faible',
-      action: 'Remplacer certains <div> par des balises sémantiques (article, section, nav)'
+      issue: 'Low semantic-to-div ratio',
+      action: 'Replace some <div> with semantic tags (article, section, nav)'
     })
   }
   
   if (ef.orderedLists.count === 0) {
     recommendations.push({
-      category: 'Formatage Extraction',
+      category: 'Extraction Format',
       priority: 'low',
-      issue: 'Aucune liste ordonnée détectée',
-      action: 'Utiliser des <ol> pour les processus et étapes (meilleure extraction IA)'
+      issue: 'No ordered lists detected',
+      action: 'Use <ol> for processes and steps (better AI extraction)'
     })
   }
   
   if (ba.ariaLabels.count < 5) {
     recommendations.push({
-      category: 'Accessibilité Bots',
+      category: 'Bot Accessibility',
       priority: 'low',
-      issue: 'Peu d\'attributs ARIA détectés',
-      action: 'Ajouter des aria-label pour améliorer l\'accessibilité et la compréhension IA'
+      issue: 'Few ARIA attributes detected',
+      action: 'Add aria-label for better accessibility and AI understanding'
     })
   }
   
-  // Si toujours aucune recommandation (site excellent), ajouter des suggestions générales
+  // If still no recommendations (excellent site), add general suggestions
   if (recommendations.length === 0) {
     recommendations.push({
-      category: 'Optimisation',
+      category: 'Optimization',
       priority: 'low',
-      issue: 'Site déjà bien optimisé',
-      action: 'Ajouter un fichier llms.txt pour des instructions spécifiques aux IA'
+      issue: 'Site already well optimized',
+      action: 'Add an llms.txt file for AI-specific instructions'
     })
     recommendations.push({
-      category: 'Optimisation',
+      category: 'Optimization',
       priority: 'low',
-      issue: 'Amélioration continue',
-      action: 'Enrichir vos schemas JSON-LD avec plus de types (HowTo, Article, Product)'
+      issue: 'Continuous improvement',
+      action: 'Enrich JSON-LD schemas with more types (HowTo, Article, Product)'
     })
     recommendations.push({
-      category: 'Optimisation',
+      category: 'Optimization',
       priority: 'low',
-      issue: 'Visibilité IA',
-      action: 'Ajouter une FAQ structurée avec le schema FAQPage pour les featured snippets IA'
+      issue: 'AI visibility',
+      action: 'Add structured FAQ with FAQPage schema for AI featured snippets'
     })
   }
   
@@ -428,7 +428,7 @@ export async function GET(request: NextRequest) {
   const url = searchParams.get('url')
   
   if (!url) {
-    return NextResponse.json({ success: false, error: 'URL requise' }, { status: 400 })
+    return NextResponse.json({ success: false, error: 'URL required' }, { status: 400 })
   }
   
   let normalizedUrl = url.trim()
@@ -478,7 +478,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: false,
       url: normalizedUrl,
-      error: error.message || 'Erreur lors de l\'analyse'
+      error: error.message || 'Error during analysis'
     }, { status: 500 })
   }
 }
