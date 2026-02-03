@@ -78,7 +78,8 @@ function getScoreLabel(score: number): { text: string; color: string } {
 
 // Category bar
 function CategoryBar({ label, score, max = 25, icon }: { label: string; score: number; max?: number; icon: string }) {
-  const percentage = (score / max) * 100
+  const safeScore = isNaN(score) ? 0 : score
+  const percentage = (safeScore / max) * 100
   const getBarColor = (pct: number) => {
     if (pct >= 70) return 'bg-green-500'
     if (pct >= 50) return 'bg-amber-500'
@@ -92,7 +93,7 @@ function CategoryBar({ label, score, max = 25, icon }: { label: string; score: n
       <div className="flex-1">
         <div className="flex justify-between text-sm mb-1">
           <span className="text-gray-700">{label}</span>
-          <span className="font-medium">{score}/{max}</span>
+          <span className="font-medium">{safeScore}/{max}</span>
         </div>
         <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
           <div 
@@ -103,6 +104,14 @@ function CategoryBar({ label, score, max = 25, icon }: { label: string; score: n
       </div>
     </div>
   )
+}
+
+// Safe average calculation
+function safeAverage(pages: PageResult[], getter: (p: PageResult) => number | undefined): number {
+  const successfulPages = pages.filter(p => p.success && p.categories)
+  if (successfulPages.length === 0) return 0
+  const sum = successfulPages.reduce((s, p) => s + (getter(p) || 0), 0)
+  return Math.round(sum / successfulPages.length)
 }
 
 // Page row component
@@ -321,22 +330,22 @@ export default function ReportPage() {
                     <CategoryBar 
                       icon="🤖" 
                       label="Machine Readability" 
-                      score={Math.round(report.pages.reduce((s, p) => s + (p.categories?.machineReadability || 0), 0) / report.pages.filter(p => p.success).length)} 
+                      score={safeAverage(report.pages, p => p.categories?.machineReadability)} 
                     />
                     <CategoryBar 
                       icon="📊" 
                       label="Structured Data" 
-                      score={Math.round(report.pages.reduce((s, p) => s + (p.categories?.structuredData || 0), 0) / report.pages.filter(p => p.success).length)} 
+                      score={safeAverage(report.pages, p => p.categories?.structuredData)} 
                     />
                     <CategoryBar 
                       icon="📝" 
                       label="Extraction Format" 
-                      score={Math.round(report.pages.reduce((s, p) => s + (p.categories?.extractionFormat || 0), 0) / report.pages.filter(p => p.success).length)} 
+                      score={safeAverage(report.pages, p => p.categories?.extractionFormat)} 
                     />
                     <CategoryBar 
                       icon="🔓" 
                       label="Bot Accessibility" 
-                      score={Math.round(report.pages.reduce((s, p) => s + (p.categories?.botAccessibility || 0), 0) / report.pages.filter(p => p.success).length)} 
+                      score={safeAverage(report.pages, p => p.categories?.botAccessibility)} 
                     />
                   </div>
                 </div>
@@ -441,11 +450,26 @@ export default function ReportPage() {
                 {report.actionPlan.critical.length === 0 && 
                  report.actionPlan.important.length === 0 && 
                  report.actionPlan.improvements.length === 0 && (
-                  <div className="text-center py-12 bg-green-50 rounded-xl border border-green-200">
-                    <div className="text-4xl mb-4">🎉</div>
-                    <h3 className="font-bold text-gray-900 mb-2">Excellent! No major issues found</h3>
-                    <p className="text-gray-600">Your site is well-optimized for AI search engines.</p>
-                  </div>
+                  report.summary.averageScore >= 70 ? (
+                    <div className="text-center py-12 bg-green-50 rounded-xl border border-green-200">
+                      <div className="text-4xl mb-4">🎉</div>
+                      <h3 className="font-bold text-gray-900 mb-2">Excellent! No major issues found</h3>
+                      <p className="text-gray-600">Your site is well-optimized for AI search engines.</p>
+                    </div>
+                  ) : report.site.pagesSuccessful === 0 ? (
+                    <div className="text-center py-12 bg-red-50 rounded-xl border border-red-200">
+                      <div className="text-4xl mb-4">❌</div>
+                      <h3 className="font-bold text-gray-900 mb-2">Analysis Failed</h3>
+                      <p className="text-gray-600">We couldn't analyze any pages on this site. The site may be blocking our crawler, using client-side rendering, or the pages timed out.</p>
+                      <p className="text-gray-500 text-sm mt-2">Try checking if the site is accessible and loads quickly.</p>
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 bg-orange-50 rounded-xl border border-orange-200">
+                      <div className="text-4xl mb-4">🔍</div>
+                      <h3 className="font-bold text-gray-900 mb-2">Limited Analysis</h3>
+                      <p className="text-gray-600">We analyzed your site but couldn't generate specific recommendations. Check the "All Pages" tab for individual page scores.</p>
+                    </div>
+                  )
                 )}
 
                 {/* CTA */}
