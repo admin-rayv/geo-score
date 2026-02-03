@@ -191,6 +191,9 @@ export default function Home() {
             <div className="flex items-center gap-6">
               <a href="#how" className="text-gray-600 hover:text-amber-600 transition-colors font-medium">Comment ça marche</a>
               <a href="#pricing" className="text-gray-600 hover:text-amber-600 transition-colors font-medium">Tarifs</a>
+              <a href="/report" className="px-4 py-2 bg-amber-500 text-white rounded-lg font-medium hover:bg-amber-600 transition-colors">
+                Rapport Premium
+              </a>
             </div>
           </div>
         </div>
