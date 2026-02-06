@@ -1,10 +1,10 @@
-# CheckGEO
+# getGEOscore
 
 📊 **GEO Score Calculator (Generative Engine Optimization)**
 
 Analyze website optimization for AI search engines (ChatGPT, Gemini, Claude, Perplexity).
 
-🌐 **https://checkgeoscore.com**
+🌐 **https://getgeoscore.com**
 
 ## Concept
 

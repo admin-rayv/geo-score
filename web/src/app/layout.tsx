@@ -5,11 +5,11 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'CheckGEO - GEO Score Calculator',
+  title: 'getGEOscore - GEO Score Calculator',
   description: 'Analyze your website optimization for AI search engines (ChatGPT, Gemini, Claude, Perplexity). Free score + recommendations.',
   keywords: 'GEO, SEO, AI, LLM, optimization, ChatGPT, Claude, Gemini, Perplexity',
   openGraph: {
-    title: 'CheckGEO - Is Your Site Ready for AI?',
+    title: 'getGEOscore - Is Your Site Ready for AI?',
     description: 'Free GEO score calculator. Discover how AI engines see your site.',
     type: 'website',
   },

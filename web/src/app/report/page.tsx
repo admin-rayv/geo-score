@@ -257,7 +257,7 @@ export default function ReportPage() {
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
                 <span className="text-white font-bold text-xl">G</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">CheckGEO</span>
+              <span className="text-xl font-bold text-gray-900">getGEOscore</span>
             </Link>
             <span className="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold">
               Premium Report

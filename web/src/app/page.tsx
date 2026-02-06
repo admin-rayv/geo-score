@@ -189,7 +189,7 @@ export default function Home() {
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
                 <span className="text-white font-bold text-xl">G</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">CheckGEO</span>
+              <span className="text-xl font-bold text-gray-900">getGEOscore</span>
             </div>
             <div className="flex items-center gap-6">
               <a href="#how" className="text-gray-600 hover:text-amber-600 transition-colors font-medium">How it works</a>
@@ -606,7 +606,7 @@ export default function Home() {
                 a: "SEO optimizes for traditional crawlers (Google, Bing) that index pages. GEO optimizes for LLMs that analyze semantic structure, structured data (JSON-LD), and machine readability. Good SEO doesn't guarantee good GEO — the criteria are different."
               },
               {
-                q: "How does the CheckGEO analysis work?",
+                q: "How does the getGEOscore analysis work?",
                 a: "Our tool analyzes 4 categories: machine readability (semantic HTML, heading hierarchy), structured data (JSON-LD, Schema.org), extraction format (FAQ, meta descriptions), and AI bot accessibility (robots.txt, llms.txt). Each category is worth 25 points for a total of 100."
               },
               {
@@ -644,11 +644,11 @@ export default function Home() {
           
           <div className="mt-12 text-center p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100">
             <p className="text-gray-600 mb-4">Have more questions?</p>
-            <a href="mailto:info@checkgeoscore.com" className="inline-flex items-center gap-2 text-amber-600 font-semibold hover:text-amber-700">
+            <a href="mailto:info@getgeoscore.com" className="inline-flex items-center gap-2 text-amber-600 font-semibold hover:text-amber-700">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              info@checkgeoscore.com
+              info@getgeoscore.com
             </a>
           </div>
         </div>
@@ -662,10 +662,10 @@ export default function Home() {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center">
                 <span className="text-white font-bold">G</span>
               </div>
-              <span className="font-bold text-gray-900">CheckGEO</span>
+              <span className="font-bold text-gray-900">getGEOscore</span>
             </div>
             <p className="text-gray-500 text-sm">
-              © 2026 CheckGEO. Powered by{' '}
+              © 2026 getGEOscore. Powered by{' '}
               <a href="https://rayv.ca" className="text-amber-600 hover:underline">RayV</a>
             </p>
           </div>
