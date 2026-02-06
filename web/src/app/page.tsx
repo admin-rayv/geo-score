@@ -193,7 +193,7 @@ export default function Home() {
             </div>
             <div className="flex items-center gap-6">
               <a href="#how" className="text-gray-600 hover:text-amber-600 transition-colors font-medium">How it works</a>
-              <a href="#pricing" className="text-gray-600 hover:text-amber-600 transition-colors font-medium">Pricing</a>
+              <a href="#guide" className="text-gray-600 hover:text-amber-600 transition-colors font-medium">GEO Guide</a>
               <a href="/report" className="px-4 py-2 bg-amber-500 text-white rounded-lg font-medium hover:bg-amber-600 transition-colors">
                 Premium Report
               </a>
@@ -527,54 +527,60 @@ export default function Home() {
         </section>
       )}
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-gray-50">
+      {/* Learn GEO Section - Educational Product */}
+      <section id="guide" className="py-20 bg-gray-50">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Simple Pricing</h2>
-            <p className="text-xl text-gray-600">Free analysis. Pay only for more details.</p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Free */}
-            <div className="card rounded-2xl p-8">
-              <div className="text-amber-600 font-semibold mb-2">Free</div>
-              <div className="text-4xl font-bold text-gray-900 mb-6">$0</div>
-              <ul className="space-y-3 text-gray-600 mb-8">
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Overall GEO score</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> 4 categories breakdown</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Top 3 recommendations</li>
-              </ul>
-              <button className="btn-secondary w-full py-3 rounded-xl">Get Started</button>
-            </div>
-            
-            {/* Report */}
-            <div className="pricing-popular rounded-2xl p-8 relative shadow-xl">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-500 text-white px-4 py-1 rounded-full text-sm font-bold">
-                Popular
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl p-8 md:p-12 border border-amber-200">
+            <div className="flex flex-col lg:flex-row items-center gap-10">
+              {/* Book mockup */}
+              <div className="shrink-0">
+                <div className="w-48 h-64 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg shadow-2xl shadow-amber-500/30 flex items-center justify-center transform -rotate-3 hover:rotate-0 transition-transform">
+                  <div className="text-center text-white p-4">
+                    <div className="text-4xl mb-2">📖</div>
+                    <div className="font-bold text-lg">The Complete</div>
+                    <div className="font-bold text-2xl">GEO Guide</div>
+                  </div>
+                </div>
               </div>
-              <div className="text-amber-600 font-semibold mb-2">Full Report</div>
-              <div className="text-4xl font-bold text-gray-900 mb-6">$29</div>
-              <ul className="space-y-3 text-gray-600 mb-8">
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Everything in Free</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> All recommendations</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Code examples</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> PDF checklist</li>
-              </ul>
-              <button className="btn-primary w-full py-3 rounded-xl">Buy Now</button>
-            </div>
-            
-            {/* Guide */}
-            <div className="card rounded-2xl p-8">
-              <div className="text-amber-600 font-semibold mb-2">GEO Guide</div>
-              <div className="text-4xl font-bold text-gray-900 mb-6">$49.99</div>
-              <ul className="space-y-3 text-gray-600 mb-8">
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> Complete eBook</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> robots.txt templates</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> llms.txt templates</li>
-                <li className="flex items-center gap-2"><span className="text-amber-500">✓</span> JSON-LD examples</li>
-              </ul>
-              <button className="btn-secondary w-full py-3 rounded-xl">Buy Now</button>
+              
+              {/* Content */}
+              <div className="flex-1 text-center lg:text-left">
+                <span className="inline-block px-3 py-1 bg-amber-200 text-amber-800 rounded-full text-sm font-semibold mb-4">
+                  eBook
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                  Master GEO from scratch
+                </h2>
+                <p className="text-lg text-gray-600 mb-6">
+                  Everything you need to optimize any website for AI search engines. 
+                  Learn once, apply everywhere.
+                </p>
+                
+                <div className="grid sm:grid-cols-2 gap-4 mb-8">
+                  {[
+                    'Complete GEO fundamentals',
+                    'robots.txt templates',
+                    'llms.txt templates', 
+                    'JSON-LD code examples',
+                    'Schema.org cheat sheet',
+                    'Implementation checklist'
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 text-gray-700">
+                      <svg className="w-5 h-5 text-amber-500 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <button className="btn-primary px-8 py-4 rounded-xl text-lg">
+                    Get the Guide — $49.99
+                  </button>
+                  <span className="text-gray-500 text-sm">Instant PDF download</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
