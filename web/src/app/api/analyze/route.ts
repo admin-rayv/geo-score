@@ -22,7 +22,7 @@ async function fetchUrl(url: string): Promise<string> {
   try {
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'GEOScoreBot/1.0 (+https://geoscore.com)',
+        'User-Agent': 'CheckGEOBot/1.0 (+https://checkgeoscore.com)',
         'Accept': 'text/html,application/xhtml+xml,*/*',
       },
       signal: controller.signal,

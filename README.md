@@ -1,55 +1,64 @@
-# GEO Score Calculator
+# CheckGEO
 
-📊 **Calculateur de score GEO (Generative Engine Optimization)**
+📊 **GEO Score Calculator (Generative Engine Optimization)**
 
-Analyse l'optimisation d'un site web pour les moteurs de recherche IA (ChatGPT, Gemini, Claude, Perplexity).
+Analyze website optimization for AI search engines (ChatGPT, Gemini, Claude, Perplexity).
+
+🌐 **https://checkgeoscore.com**
 
 ## Concept
 
-1. User entre son URL
-2. On analyse le site (scraping + scoring)
-3. **Gratuit:** Score GEO (0-100) + 3 recommandations
-4. **Payant:** Rapport complet + Guide GEO PDF
+1. User enters their URL
+2. We analyze the site (scraping + scoring)
+3. **Free:** GEO Score (0-100) + 3 recommendations
+4. **Paid:** Full report ($29) + GEO Guide PDF ($49.99)
 
 ## Structure
 
 ```
 /geo-score
   /api          # Backend - scraper + scoring engine
-  /web          # Frontend - landing page + results
-  /docs         # Documentation
+  /web          # Frontend - Next.js app
 ```
 
-## Critères d'analyse (100 points)
+## Scoring Criteria (100 points)
 
-### 1. Lisibilité Machine (25 pts)
-- HTML5 sémantique (article, section, aside, details/summary)
-- Hiérarchie des titres (H1 unique, H2, H3 nested properly)
-- Ratio divs vs éléments sémantiques
-- Détection SSR vs CSR
+### 1. Machine Readability (25 pts)
+- Semantic HTML5 (article, section, aside, details/summary)
+- Heading hierarchy (unique H1, properly nested H2, H3)
+- Divs vs semantic elements ratio
+- SSR vs CSR detection
 
-### 2. Données Structurées (25 pts)
-- Présence JSON-LD
-- Types Schema détectés (LocalBusiness, Service, FAQPage, Person, Organization)
-- Qualité/complétude du schema
+### 2. Structured Data (25 pts)
+- JSON-LD presence
+- Schema types detected (LocalBusiness, Service, FAQPage, Person, Organization)
+- Schema quality/completeness
 
-### 3. Formatage pour Extraction (25 pts)
-- FAQ détectée (details/summary ou schema FAQPage)
-- Tableaux HTML propres
-- Listes ordonnées pour processus
-- Meta description présente et qualité
+### 3. Extraction Format (25 pts)
+- FAQ detected (details/summary or FAQPage schema)
+- Clean HTML tables
+- Ordered lists for processes
+- Meta description presence and quality
 
-### 4. Accessibilité aux Bots (25 pts)
-- Vérifier robots.txt pour bots IA (GPTBot, ClaudeBot, PerplexityBot...)
-- Présence fichier llms.txt
-- Alt text sur images
-- Aria labels
+### 4. Bot Accessibility (25 pts)
+- robots.txt check for AI bots (GPTBot, ClaudeBot, PerplexityBot...)
+- llms.txt file presence
+- Alt text on images
+- ARIA labels
 
 ## Stack
 
 - **Backend:** Node.js + Cheerio
-- **Frontend:** Next.js
+- **Frontend:** Next.js + Tailwind
 - **Hosting:** Vercel
+
+## Dev
+
+```bash
+cd web
+npm install
+npm run dev -- -p 3005
+```
 
 ## License
 
