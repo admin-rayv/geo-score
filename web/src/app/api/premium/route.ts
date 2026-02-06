@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import * as cheerio from 'cheerio'
 
 // Configuration
-const DEFAULT_USER_AGENT = 'getGEOscoreBot/1.0 (+https://getgeoscore.com)'
+const DEFAULT_USER_AGENT = 'getGEOscoreBot/1.0 (+https://checkgeoscore.com)'
 const TIMEOUT = 15000
 const MAX_PAGES = 20
 

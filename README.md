@@ -4,7 +4,7 @@
 
 Analyze website optimization for AI search engines (ChatGPT, Gemini, Claude, Perplexity).
 
-🌐 **https://getgeoscore.com**
+🌐 **https://checkgeoscore.com**
 
 ## Concept
 
