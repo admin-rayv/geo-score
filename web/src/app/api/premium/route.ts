@@ -765,6 +765,24 @@ function analyzePageContent($: cheerio.CheerioAPI, html: string, robotsTxt: stri
     })
   }
   
+  // Suggest ordered lists if none exist (for how-to/step content)
+  if ($('ol li').length < 3) {
+    recommendations.push({
+      category: 'Extraction Format',
+      priority: 'low',
+      action: 'Add numbered lists (<ol><li>) for step-by-step instructions — AI loves structured steps'
+    })
+  }
+  
+  // Suggest tables if content could benefit
+  if ($('table thead').length === 0 && $('table th').length === 0) {
+    recommendations.push({
+      category: 'Extraction Format',
+      priority: 'low',
+      action: 'Use <table> with <thead>/<th> for comparison data — helps AI extract structured info'
+    })
+  }
+  
   // Bot Accessibility recommendations based on baIssues
   if (baIssues.some(i => i.startsWith('bots_mostly_blocked:'))) {
     const blocked = baIssues.find(i => i.startsWith('bots_mostly_blocked:'))?.split(':')[1]
