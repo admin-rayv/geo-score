@@ -420,9 +420,10 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-white">
       {/* Navigation */}
-      <nav className="border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+      <header>
+        <nav className="border-b border-gray-100">
+          <div className="max-w-6xl mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-500/30">
                 <span className="text-white font-bold text-xl">G</span>
@@ -435,10 +436,11 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </nav>
+        </nav>
+      </header>
 
       {/* Hero Section */}
-      <section className="hero-gradient relative overflow-hidden">
+      <section aria-label="GEO Score Calculator" className="hero-gradient relative overflow-hidden">
         <svg className="absolute inset-0 w-full h-full z-0" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" style={{ minHeight: '100%' }}>
           <defs>
             <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -870,13 +872,13 @@ export default function Home() {
       )}
 
       {/* How it works Section */}
-      <section id="how" className="py-24 bg-gradient-to-b from-white to-amber-50/50">
+      <section id="how" aria-labelledby="how-heading" className="py-24 bg-gradient-to-b from-white to-amber-50/50">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-16">
             <span className="inline-block px-4 py-1.5 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold mb-4">
               Why it matters
             </span>
-            <h2 className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 id="how-heading" className="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
               <span className="gradient-text">GEO</span> is the new SEO
             </h2>
             <p className="text-xl text-gray-500 max-w-2xl mx-auto">
@@ -931,7 +933,7 @@ export default function Home() {
                 statLabel: 'to implement'
               },
             ].map((item, i) => (
-              <div key={i} className="group bg-white rounded-2xl p-8 border border-amber-100 hover:border-amber-300 hover:shadow-xl hover:shadow-amber-100/50 transition-all duration-300">
+              <article key={i} className="group bg-white rounded-2xl p-8 border border-amber-100 hover:border-amber-300 hover:shadow-xl hover:shadow-amber-100/50 transition-all duration-300">
                 <div className="flex items-start gap-5">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white shrink-0 group-hover:scale-110 transition-transform">
                     {item.icon}
@@ -945,20 +947,20 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-24 bg-white">
+      <section id="faq" aria-labelledby="faq-heading" className="py-24 bg-white">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16">
             <span className="inline-block px-4 py-1.5 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold mb-4">
               FAQ
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 id="faq-heading" className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Frequently Asked Questions
             </h2>
             <p className="text-xl text-gray-500">
@@ -1013,7 +1015,7 @@ export default function Home() {
             ))}
           </div>
           
-          <div className="mt-12 text-center p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100">
+          <aside className="mt-12 text-center p-8 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100">
             <p className="text-gray-600 mb-4">Have more questions?</p>
             <a href="mailto:info@checkgeoscore.com" className="inline-flex items-center gap-2 text-amber-600 font-semibold hover:text-amber-700">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1021,7 +1023,7 @@ export default function Home() {
               </svg>
               info@checkgeoscore.com
             </a>
-          </div>
+          </aside>
         </div>
       </section>
 
