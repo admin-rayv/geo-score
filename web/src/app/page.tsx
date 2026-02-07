@@ -444,8 +444,7 @@ export default function Home() {
       )}
 
       {/* How it works Section */}
-      {!result && !error && (
-        <section id="how" className="py-24 bg-gradient-to-b from-white to-amber-50/50">
+      <section id="how" className="py-24 bg-gradient-to-b from-white to-amber-50/50">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
               <span className="inline-block px-4 py-1.5 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold mb-4">
@@ -525,7 +524,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-      )}
 
       {/* Learn GEO Section - Educational Product */}
       <section id="guide" className="py-20 bg-gray-50">
