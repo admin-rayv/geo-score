@@ -953,8 +953,111 @@ export default function Home() {
         </div>
       </section>
 
+      {/* How to Improve Section - with ordered list and table */}
+      <section aria-label="How to improve your GEO score" className="py-24 bg-white">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <span className="inline-block px-4 py-1.5 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold mb-4">
+              Quick Start
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              How to Improve Your GEO Score
+            </h2>
+            <p className="text-xl text-gray-500">
+              Follow these steps to optimize for AI search engines
+            </p>
+          </div>
+
+          {/* Numbered Steps */}
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-8 mb-12 border border-amber-100">
+            <ol className="space-y-6">
+              <li className="flex gap-4">
+                <span className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold shrink-0">1</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Run your free GEO analysis</h3>
+                  <p className="text-gray-600">Enter your URL above to get your current score and specific recommendations.</p>
+                </div>
+              </li>
+              <li className="flex gap-4">
+                <span className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold shrink-0">2</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Add JSON-LD structured data</h3>
+                  <p className="text-gray-600">Include Organization, Article, or FAQPage schema on every page.</p>
+                </div>
+              </li>
+              <li className="flex gap-4">
+                <span className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold shrink-0">3</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Check your robots.txt</h3>
+                  <p className="text-gray-600">Ensure GPTBot, ClaudeBot, and PerplexityBot are not blocked.</p>
+                </div>
+              </li>
+              <li className="flex gap-4">
+                <span className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold shrink-0">4</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Use semantic HTML</h3>
+                  <p className="text-gray-600">Replace generic divs with article, section, nav, header, and footer tags.</p>
+                </div>
+              </li>
+              <li className="flex gap-4">
+                <span className="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold shrink-0">5</span>
+                <div>
+                  <h3 className="font-semibold text-gray-900">Create an llms.txt file</h3>
+                  <p className="text-gray-600">Give AI crawlers specific instructions about your site content.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          {/* Comparison Table */}
+          <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <div className="p-6 border-b border-gray-100">
+              <h3 className="text-xl font-bold text-gray-900">SEO vs GEO: Key Differences</h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Aspect</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Traditional SEO</th>
+                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">GEO (AI Optimization)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  <tr>
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Target</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">Google, Bing crawlers</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">ChatGPT, Claude, Perplexity</td>
+                  </tr>
+                  <tr className="bg-gray-50/50">
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Content Format</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">Keywords, backlinks</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">Structured data, semantic HTML</td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Schema Importance</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">Nice to have</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">Essential (JSON-LD required)</td>
+                  </tr>
+                  <tr className="bg-gray-50/50">
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Bot Control</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">robots.txt for Googlebot</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">robots.txt + llms.txt for AI bots</td>
+                  </tr>
+                  <tr>
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">Goal</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">Rank in search results</td>
+                    <td className="px-6 py-4 text-sm text-gray-600">Be cited by AI assistants</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Section */}
-      <section id="faq" aria-labelledby="faq-heading" className="py-24 bg-white">
+      <section id="faq" aria-labelledby="faq-heading" className="py-24 bg-gray-50">
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-16">
             <span className="inline-block px-4 py-1.5 bg-amber-100 text-amber-700 rounded-full text-sm font-semibold mb-4">
